@@ -36,10 +36,9 @@ void WriteDataToFile(std::map<std::string, int>& celsiusTemps, std::ofstream& ou
 	std::map<std::string, int>::iterator it = celsiusTemps.begin();
 	while (it != celsiusTemps.end())
 	{
-		outFileStream << it->first << " " << it->second << std::endl;
+		outFileStream << it->first << " " << round((it->second - 32) * (5.0 / 9.0)) << std::endl;
 		++it;
 	}
-
 	outFileStream.close();
 }
 
@@ -55,34 +54,22 @@ void PrintData(std::map<std::string, int>& map)
 	}
 }
 
-void ConvertToCelsius(std::map<std::string, int>& FahrenheitTemps, std::map<std::string, int>& CelsiusTemps)
-{
-	std::map<std::string, int>::iterator it = FahrenheitTemps.begin();
-	while (it != FahrenheitTemps.end())
-	{
-	
-		CelsiusTemps[it->first] = round((it->second - 32) * (5.0 / 9.0));
-		++it;
-	}
-}
-
 int main()
 {
 	std::ifstream inFileStream;
 	std::ofstream outFileStream;
 	std::map<std::string, int> fahrenheitTemps;
-	std::map<std::string, int> celsiusTemps;
 
 	//Read the fahrenheitTemps from file.
 	//if the OpenFile Function fails then the program terminates. 
 	if(!OpenFile(inFileStream, "FahrenheitTemperature.txt")) return 1;
 	ReadData(inFileStream, fahrenheitTemps);
 	
-	ConvertToCelsius(fahrenheitTemps, celsiusTemps);
-
 	//Write CelsiusTemps to file.
 	if(!OpenFile(outFileStream, "CelsiusTemperature.txt")) return 1;
-	WriteDataToFile(celsiusTemps, outFileStream);
+	WriteDataToFile(fahrenheitTemps, outFileStream);
+
+	std::cout << "Conversion complete and data written to file..." << std::endl;
 
 	return 0;
 }
