@@ -5,7 +5,7 @@
 
 int OpenFile(std::ifstream& outStream, const std::string& fileName)
 {
-	outStream.open("FahrenheitTemperature.txt");
+	outStream.open(fileName);
 	if (!outStream.is_open())
 	{
 		std::cout << "Could not open file." << std::endl;
