@@ -2,7 +2,6 @@
 #include<fstream>
 #include<map>
 #include<cmath>
-#include "main.h"
 
 //Opens a file for a given stream.
 template<typename T>
@@ -30,6 +29,18 @@ void ReadData(std::ifstream& stream, std::map<std::string, int>& outMap)
 	}
 
 	stream.close();
+}
+
+void WriteDataToFile(std::map<std::string, int>& celsiusTemps, std::ofstream& outFileStream)
+{
+	std::map<std::string, int>::iterator it = celsiusTemps.begin();
+	while (it != celsiusTemps.end())
+	{
+		outFileStream << it->first << " " << it->second << std::endl;
+		++it;
+	}
+
+	outFileStream.close();
 }
 
 //Helper function to verify data is being read and calculated correctly...
@@ -62,23 +73,18 @@ int main()
 	std::map<std::string, int> fahrenheitTemps;
 	std::map<std::string, int> celsiusTemps;
 
+	//Read the fahrenheitTemps from file.
 	//if the OpenFile Function fails then the program terminates. 
 	if(!OpenFile(inFileStream, "FahrenheitTemperature.txt")) return 1;
 	ReadData(inFileStream, fahrenheitTemps);
+	
 	ConvertToCelsius(fahrenheitTemps, celsiusTemps);
 
-	std::map<std::string, int>::iterator it = celsiusTemps.begin();
-
+	//Write CelsiusTemps to file.
 	if(!OpenFile(outFileStream, "CelsiusTemperature.txt")) return 1;
-
-	while (it != celsiusTemps.end())
-	{
-		outFileStream << it->first << " " << it->second << std::endl;
-		++it;
-	}
-
-	outFileStream.close();
+	WriteDataToFile(celsiusTemps, outFileStream);
 
 	return 0;
 }
+
 
