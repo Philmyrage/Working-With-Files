@@ -1,8 +1,10 @@
 #include<iostream>
 #include<fstream>
 #include<map>
+#include<cmath>
+#include "main.h"
 
-int OpenFile(std::ifstream& outStream, const std::string& fileName)
+int OpenFileForReading(std::ifstream& outStream, const std::string& fileName)
 {
 	outStream.open(fileName);
 	if (!outStream.is_open())
@@ -39,16 +41,31 @@ void PrintData(std::map<std::string, int>& map)
 	}
 }
 
+void ConvertToCelsius(std::map<std::string, int>& FahrenheitTemps, std::map<std::string, int>& CelsiusTemps)
+{
+	std::map<std::string, int>::iterator it = FahrenheitTemps.begin();
+	while (it != FahrenheitTemps.end())
+	{
+	
+		CelsiusTemps[it->first] = round((it->second - 32) * (5.0 / 9.0));
+		++it;
+	}
+}
+
 int main()
 {
 	std::ifstream inFileStream;
-	std::map<std::string, int> temperatures;
+	std::map<std::string, int> FahrenheitTemps;
+	std::map<std::string, int> CelsiusTemps;
 
+	//if the OpenFile Function fails then the program terminates. 
+	if(OpenFileForReading(inFileStream, "FahrenheitTemperature.txt") == 1) return 1;
+	ReadData(inFileStream, FahrenheitTemps);
 
-	if(OpenFile(inFileStream, "FahrenheitTemperature.txt") == 1) return 1;
-	ReadData(inFileStream, temperatures);
-	PrintData(temperatures);
+	ConvertToCelsius(FahrenheitTemps, CelsiusTemps);
 
+	PrintData(CelsiusTemps);
 
 	return 0;
 }
+
