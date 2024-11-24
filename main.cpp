@@ -3,6 +3,16 @@
 #include<vector>
 #include<map>
 
+int OpenFile(std::ifstream& stream, const std::string& fileName)
+{
+	stream.open("FahrenheitTemperature.txt");
+	if (!stream.is_open())
+	{
+		std::cout << "Could not open file." << std::endl;
+		return 1;
+	}
+	return 0;
+}
 
 int main()
 {
@@ -11,12 +21,8 @@ int main()
 	std::string city = "";
 	int temperature = 0;
 
-	inFileStream.open("FahrenheitTemperature.txt");
-	if (!inFileStream.is_open())
-	{
-		std::cout << "Could not open file." << std::endl;
-		return 1;
-	}
+	if(OpenFile(inFileStream, "FahrenheitTemperature.txt") == 1) return 1;
+
 	
 	while (!inFileStream.eof())
 	{
