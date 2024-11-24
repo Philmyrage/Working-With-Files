@@ -3,10 +3,10 @@
 #include<vector>
 #include<map>
 
-int OpenFile(std::ifstream& stream, const std::string& fileName)
+int OpenFile(std::ifstream& outStream, const std::string& fileName)
 {
-	stream.open("FahrenheitTemperature.txt");
-	if (!stream.is_open())
+	outStream.open("FahrenheitTemperature.txt");
+	if (!outStream.is_open())
 	{
 		std::cout << "Could not open file." << std::endl;
 		return 1;
@@ -14,22 +14,27 @@ int OpenFile(std::ifstream& stream, const std::string& fileName)
 	return 0;
 }
 
+void ReadData(std::ifstream& stream, std::map<std::string, int>& outMap)
+{
+	std::string city = "";
+	int temperature = 0;
+
+	while (!stream.eof())
+	{
+		stream >> city;
+		stream >> temperature;
+		outMap[city] = temperature;
+	}
+}
+
 int main()
 {
 	std::ifstream inFileStream;
 	std::map<std::string, int> t;
-	std::string city = "";
-	int temperature = 0;
+
 
 	if(OpenFile(inFileStream, "FahrenheitTemperature.txt") == 1) return 1;
-
-	
-	while (!inFileStream.eof())
-	{
-		inFileStream >> city;
-		inFileStream >> temperature;
-		t[city] = temperature;
-	}
+	ReadData(inFileStream, t);
 
 	std::map<std::string, int>::iterator it = t.begin();
 
