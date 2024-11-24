@@ -1,6 +1,5 @@
 #include<iostream>
 #include<fstream>
-#include<vector>
 #include<map>
 
 int OpenFile(std::ifstream& outStream, const std::string& fileName)
@@ -25,6 +24,8 @@ void ReadData(std::ifstream& stream, std::map<std::string, int>& outMap)
 		stream >> temperature;
 		outMap[city] = temperature;
 	}
+
+	stream.close();
 }
 
 void PrintData(std::map<std::string, int>& map)
@@ -41,12 +42,12 @@ void PrintData(std::map<std::string, int>& map)
 int main()
 {
 	std::ifstream inFileStream;
-	std::map<std::string, int> t;
+	std::map<std::string, int> temperatures;
 
 
 	if(OpenFile(inFileStream, "FahrenheitTemperature.txt") == 1) return 1;
-	ReadData(inFileStream, t);
-	PrintData(t);
+	ReadData(inFileStream, temperatures);
+	PrintData(temperatures);
 
 
 	return 0;
