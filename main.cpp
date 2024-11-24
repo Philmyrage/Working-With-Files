@@ -27,6 +27,17 @@ void ReadData(std::ifstream& stream, std::map<std::string, int>& outMap)
 	}
 }
 
+void PrintData(std::map<std::string, int>& map)
+{
+	std::map<std::string, int>::iterator it = map.begin();
+
+	while (it != map.end())
+	{
+		std::cout << it->first << " " << it->second << std::endl;
+		++it;
+	}
+}
+
 int main()
 {
 	std::ifstream inFileStream;
@@ -35,14 +46,8 @@ int main()
 
 	if(OpenFile(inFileStream, "FahrenheitTemperature.txt") == 1) return 1;
 	ReadData(inFileStream, t);
+	PrintData(t);
 
-	std::map<std::string, int>::iterator it = t.begin();
-
-	while (it != t.end())
-	{
-		std::cout << it->first << " " << it->second << std::endl;
-		++it;
-	}
 
 	return 0;
 }
