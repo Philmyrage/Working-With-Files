@@ -4,15 +4,17 @@
 #include<cmath>
 #include "main.h"
 
-int OpenFileForReading(std::ifstream& outStream, const std::string& fileName)
+//Opens a file for a given stream.
+template<typename T>
+bool OpenFile(T& outStream, const std::string& fileName)
 {
 	outStream.open(fileName);
 	if (!outStream.is_open())
 	{
 		std::cout << "Could not open file." << std::endl;
-		return 1;
+		return false;
 	}
-	return 0;
+	return true;
 }
 
 void ReadData(std::ifstream& stream, std::map<std::string, int>& outMap)
@@ -30,6 +32,7 @@ void ReadData(std::ifstream& stream, std::map<std::string, int>& outMap)
 	stream.close();
 }
 
+//Helper function to verify data is being read and calculated correctly...
 void PrintData(std::map<std::string, int>& map)
 {
 	std::map<std::string, int>::iterator it = map.begin();
@@ -55,16 +58,26 @@ void ConvertToCelsius(std::map<std::string, int>& FahrenheitTemps, std::map<std:
 int main()
 {
 	std::ifstream inFileStream;
-	std::map<std::string, int> FahrenheitTemps;
-	std::map<std::string, int> CelsiusTemps;
+	std::ofstream outFileStream;
+	std::map<std::string, int> fahrenheitTemps;
+	std::map<std::string, int> celsiusTemps;
 
 	//if the OpenFile Function fails then the program terminates. 
-	if(OpenFileForReading(inFileStream, "FahrenheitTemperature.txt") == 1) return 1;
-	ReadData(inFileStream, FahrenheitTemps);
+	if(!OpenFile(inFileStream, "FahrenheitTemperature.txt")) return 1;
+	ReadData(inFileStream, fahrenheitTemps);
+	ConvertToCelsius(fahrenheitTemps, celsiusTemps);
 
-	ConvertToCelsius(FahrenheitTemps, CelsiusTemps);
+	std::map<std::string, int>::iterator it = celsiusTemps.begin();
 
-	PrintData(CelsiusTemps);
+	if(!OpenFile(outFileStream, "CelsiusTemperature.txt")) return 1;
+
+	while (it != celsiusTemps.end())
+	{
+		outFileStream << it->first << " " << it->second << std::endl;
+		++it;
+	}
+
+	outFileStream.close();
 
 	return 0;
 }
