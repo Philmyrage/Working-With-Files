@@ -1,3 +1,9 @@
+/*
+	Created by: Phillip Wood
+	Date: 11/24/2024
+	https://github.com/Philmyrage/Working-With-Files
+*/
+
 #include<iostream>
 #include<fstream>
 #include<map>
